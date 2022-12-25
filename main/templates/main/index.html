@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zxx" dir="ltr">
+	<body>
+		<div class="row">
+	    </div>
+	    <div class="col-sm-6 col-lg-4 mb-4">
+	    	<h2>Добавить заметку:</h2>
+	    	<form class="contact-form-style" method="post" enctype="multipart/form-data" >
+			    <div class="input-group mb-3">
+				  {{ form.title }}
+				  <button type="submit" name='form' class="btn btn-outline-secondary">Сохранить</button>
+				</div>
+	        {% csrf_token %}
+	        {{ form.image }}
+			</form>
+		</div>
+	     <div class="col-sm-6 col-lg-4 mb-4">
+	      {% for el in notes %}
+	      <div class="card">
+	        <div class="card-body">
+	          <h4 class="card-title" style="text-align: left;">Название: {{ el.title }}</h4>
+	          {% if el.image %}
+	          	<img style="height: 100px;width: 100px; text-align: left;" src="{{el.image.url}}" alt="Product" />
+	          {% endif %}
+	          <form class="contact-form-style" method="post" enctype="multipart/form-data">
+	          	{% csrf_token %}
+	          	<button type="submit" name='like' value="{{ el }}" class="btn btn-outline-secondary">✅{{ el.like }}</button>
+	          	<button type="submit" name='dislike' value="{{ el }}" class="btn btn-outline-secondary">❌{{ el.dislike }}</button>
+	        	</form>
+
+	        	<form class="contact-form-style" method="post">
+				        {% csrf_token %}
+						    <div class="input-group mb-3">
+							  	{{ formtwo.single_comment }}
+							  	<button type="submit" name='formtwo' value="{{ el.id }}" class="btn btn-outline-secondary">Отправить</button>
+								</div>
+						</form>
+	        	<h4 class="card-title">Комментарии:</h4>
+	        	{% for x in comments %}
+	        		{% if x.note == el %}
+	        		<p>{{ x.single_comment }}</p>
+	        		{% endif %}
+	        	{% endfor %}
+	        </div>
+	      </div>
+	      {% endfor %}
+		</div>
+	</body>
+</html>
